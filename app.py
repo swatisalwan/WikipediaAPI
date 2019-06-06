@@ -3,14 +3,18 @@ import wikipedia
 app= Flask(__name__)
 
 
-@app.route("/login", methods =['GET','POST'])
+@app.route("/", methods =['GET','POST'])
 def login():
     if request.method == 'GET':
         return render_template("login.html")
     else:
-        Search=request.form.get('Search')
-        summary=wikipedia.summary(Search)
-        return summary
+        try:
+            Search=request.form.get('Search')
+            summary=wikipedia.summary(Search)
+            return summary
+
+        except wikipedia.exceptions.DisambiguationError as e:
+            return (str(e))
        
     
 
